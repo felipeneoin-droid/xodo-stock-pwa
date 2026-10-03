@@ -6994,7 +6994,9 @@ function __legado_finalizarPedidoV11520_1(){
   }
   function refreshInstallButton(){
     const b=$('xodoInstallBtn'); if(!b) return;
-    const canShow = !standalone() && (deferredInstallPrompt || isIOS());
+    // O botão deve existir também no Android mesmo antes de o Chrome
+    // disparar beforeinstallprompt. Só some quando o PWA já está instalado.
+    const canShow = !standalone();
     b.classList.toggle('is-visible', !!canShow);
   }
   window.addEventListener('beforeinstallprompt', function(ev){
@@ -7021,7 +7023,7 @@ function __legado_finalizarPedidoV11520_1(){
         const t=$('xodoInstallHelpText');
         if(t) t.textContent = isIOS()
           ? 'No iPhone/iPad, toque em Compartilhar e depois em “Adicionar à Tela de Início”.'
-          : 'Abra o menu do navegador e escolha “Instalar app” ou “Adicionar à tela inicial”.';
+          : 'No Android, abra o menu ⋮ do Chrome e toque em “Instalar app” ou “Adicionar à tela inicial”. Se essa opção ainda não aparecer, recarregue a página após alguns segundos.';
         help.classList.add('open'); help.setAttribute('aria-hidden','false');
       }
     });
